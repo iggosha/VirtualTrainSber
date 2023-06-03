@@ -1,4 +1,4 @@
-package org.example;
+package org.train;
 
 import java.io.EOFException;
 import java.io.File;

@@ -1,6 +1,5 @@
 package org.train;
 
-import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -28,7 +27,7 @@ public class Main {
                 }
                 System.out.println(new City(stringObj[1], stringObj[2], stringObj[3], Integer.parseInt(stringObj[4]), stringObj[5]));
             }
-        } catch (NoSuchElementException exception) {
+        } catch (NoSuchElementException ignored) {
         }
     }
 }

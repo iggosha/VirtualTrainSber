@@ -20,15 +20,15 @@ public class Main {
     public static void main(String[] args) {
         try {
             while (true) {
+                String[] stringObj = new String[6];
                 String[] stringCsv = read.nextLine().split(";");
-                List<String> lineCsv = new ArrayList<>(Arrays.asList(stringCsv));
-                if (stringCsv.length == 5) {
-                    lineCsv.add("");
+                System.arraycopy(stringCsv, 0, stringObj, 0, stringCsv.length);
+                if (stringObj[5] == null) {
+                    stringObj[5] = "";
                 }
-                System.out.println(new City((String) lineCsv.get(1), (String) lineCsv.get(2), (String) lineCsv.get(3),
-                        Integer.parseInt(lineCsv.get(4)), (String) lineCsv.get(5)));
+                System.out.println(new City(stringObj[1], stringObj[2], stringObj[3], Integer.parseInt(stringObj[4]), stringObj[5]));
             }
-        } catch (NoSuchElementException exception){
+        } catch (NoSuchElementException exception) {
         }
     }
 }

@@ -38,7 +38,11 @@ public class Application {
      * Если конец файла - останавливает цикл
      * Если неизвестна дата основания - добавляет к массиву пустой элемент " "
      * Добавляет считанный город в список городов
-     * Выводит его на экран
+     * Выводит часть списка городов, отсортированного по различным критериям
+     *
+     * @see CityNameLowercaseComparator
+     * @see CityNameComparator
+     * @see CityDistrictComparator
      */
     public static void main(String[] args) {
         while (true) {
@@ -49,8 +53,20 @@ public class Application {
                 cityStrObj[5] = "";
             }
             citiesList.add(new City(cityStrObj[1], cityStrObj[2], cityStrObj[3], Integer.parseInt(cityStrObj[4]), cityStrObj[5]));
-            System.out.println(citiesList.get(citiesList.size() - 1));
         }
+        // Вывод неотсортированного списка
+        printPartOfList(citiesList, 10);
+
+        // Сортировка с помощью лямбда-выражения и Comparator.comparing()
+        citiesList.sort(Comparator.comparing((City city) -> city.getName().toLowerCase()));
+        printPartOfList(citiesList, 10);
+
+        // Перемешивание списка
+        // Collections.shuffle(citiesList);
+
+        // Сортировка с помощью класса, реализующего интерфейс Comparator, затем сортировка с помощью лямбда-выражения
+        citiesList.sort(new CityDistrictComparator().thenComparing((City city1, City city2) -> city1.getName().compareTo(city2.getName())));
+        printPartOfList(citiesList, 10);
     }
 
     /**
@@ -69,6 +85,12 @@ public class Application {
         }
         return stringFromCsvFile;
     }
+
+    public static void printPartOfList(List list, int amountOfElementsToPrint) {
+        list.stream().limit(amountOfElementsToPrint).forEach(System.out::println);
+        System.out.println();
+
+    }
 }
 
 
@@ -78,11 +100,31 @@ public class Application {
  */
 class City {
 
-    String name;
-    String region;
-    String district;
-    int population;
-    String foundation;
+    private String name;
+    private String region;
+    private String district;
+    private int population;
+    private String foundation;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public String getFoundation() {
+        return foundation;
+    }
 
     @Override
     public String toString() {

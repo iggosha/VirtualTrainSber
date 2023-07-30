@@ -38,7 +38,7 @@ public class Application {
      * Если конец файла - останавливает цикл
      * Если неизвестна дата основания - добавляет к массиву пустой элемент " "
      * Добавляет считанный город в список городов
-     * Выводит индекс города с максимальной численностью населения и саму численность населения
+     * Выводит  количество городов в каждом регионе
      *
      * @see CityNameLowercaseComparator
      * @see CityNameComparator
@@ -54,10 +54,8 @@ public class Application {
             }
             citiesList.add(new City(cityStrObj[1], cityStrObj[2], cityStrObj[3], Integer.parseInt(cityStrObj[4]), cityStrObj[5]));
         }
+        getRegionsAndAmountOfTheirAmountOfCitiesMap(citiesList).forEach((key, value) -> System.out.println(key + " - " + value));
 
-        City[] citiesArray = citiesList.toArray(new City[0]);
-        System.out.println(getIndexOfCityWithMaxPopulation(citiesArray) + " = "
-                + citiesArray[getIndexOfCityWithMaxPopulation(citiesArray)].getPopulation());
     }
 
     /**
@@ -103,6 +101,46 @@ public class Application {
             }
         }
         return indexOfCityWithMaxPopulation;
+    }
+
+    /**
+     * Переопределённый метод, возвращающий индекс без преобразования в массив
+     *
+     * @param citiesList Список городов
+     * @return Индекс города с максимальной численностью населения
+     */
+    public static int getIndexOfCityWithMaxPopulation(List<City> citiesList) {
+        int indexOfCityWithMaxPopulation = 0;
+        for (int i = 0; i < citiesList.size(); i++) {
+            if (citiesList.get(i).getPopulation() > citiesList.get(indexOfCityWithMaxPopulation).getPopulation()) {
+                indexOfCityWithMaxPopulation = i;
+            }
+        }
+        return indexOfCityWithMaxPopulation;
+    }
+
+    /**
+     * Определяет количеством городов в каждом регионе
+     * @param citiesList список городов
+     * @return HashMap с названием региона : количеством городов
+     */
+    public static Map<String, Integer> getRegionsAndAmountOfTheirAmountOfCitiesMap(List<City> citiesList) {
+        // Необходимо определить количество городов в каждом регионе.
+        // Пример полученного результата:
+        // Вологодская область - 15
+        // Татарстан - 22 ..
+        Map<String, Integer> regionsMap = new HashMap<>();
+
+        for (City city : citiesList) {
+            String regionOfCity = city.getRegion();
+            if (regionsMap.containsKey(regionOfCity)) {
+                regionsMap.put(regionOfCity, regionsMap.get(regionOfCity) + 1);
+            } else {
+                regionsMap.put(regionOfCity, 1);
+            }
+        }
+
+        return regionsMap;
     }
 }
 

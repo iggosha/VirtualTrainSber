@@ -38,7 +38,7 @@ public class Application {
      * Если конец файла - останавливает цикл
      * Если неизвестна дата основания - добавляет к массиву пустой элемент " "
      * Добавляет считанный город в список городов
-     * Выводит часть списка городов, отсортированного по различным критериям
+     * Выводит индекс города с максимальной численностью населения и саму численность населения
      *
      * @see CityNameLowercaseComparator
      * @see CityNameComparator
@@ -54,19 +54,10 @@ public class Application {
             }
             citiesList.add(new City(cityStrObj[1], cityStrObj[2], cityStrObj[3], Integer.parseInt(cityStrObj[4]), cityStrObj[5]));
         }
-        // Вывод неотсортированного списка
-        printPartOfList(citiesList, 10);
 
-        // Сортировка с помощью лямбда-выражения и Comparator.comparing()
-        citiesList.sort(Comparator.comparing((City city) -> city.getName().toLowerCase()));
-        printPartOfList(citiesList, 10);
-
-        // Перемешивание списка
-        // Collections.shuffle(citiesList);
-
-        // Сортировка с помощью класса, реализующего интерфейс Comparator, затем сортировка с помощью лямбда-выражения
-        citiesList.sort(new CityDistrictComparator().thenComparing((City city1, City city2) -> city1.getName().compareTo(city2.getName())));
-        printPartOfList(citiesList, 10);
+        City[] citiesArray = citiesList.toArray(new City[0]);
+        System.out.println(getIndexOfCityWithMaxPopulation(citiesArray) + " = "
+                + citiesArray[getIndexOfCityWithMaxPopulation(citiesArray)].getPopulation());
     }
 
     /**
@@ -86,10 +77,32 @@ public class Application {
         return stringFromCsvFile;
     }
 
+    /**
+     * Выводит часть списка
+     *
+     * @param list                    Список, который требуется вывести
+     * @param amountOfElementsToPrint Количество элементов, которое нужно вывести
+     */
     public static void printPartOfList(List list, int amountOfElementsToPrint) {
         list.stream().limit(amountOfElementsToPrint).forEach(System.out::println);
         System.out.println();
 
+    }
+
+    /**
+     * @param citiesArray Массив городов
+     * @return Индекс города с максимальной численностью населения
+     */
+    public static int getIndexOfCityWithMaxPopulation(City[] citiesArray) {
+        // Необходимо преобразовать список городов в массив.
+        // А затем путем перебора массива найти индекс элемента и значение с наибольшим количеством жителей города.
+        int indexOfCityWithMaxPopulation = 0;
+        for (int i = 0; i < citiesArray.length; i++) {
+            if (citiesArray[i].getPopulation() > citiesArray[indexOfCityWithMaxPopulation].getPopulation()) {
+                indexOfCityWithMaxPopulation = i;
+            }
+        }
+        return indexOfCityWithMaxPopulation;
     }
 }
 
